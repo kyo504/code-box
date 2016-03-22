@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <errno.h>
 
 #define BUF_SIZE 1024
 
@@ -26,6 +27,7 @@ int main(int argc, char** argv)
 	if(sock == -1) {
 		error_handling("socket() error");
 	}
+	printf("Server socket is created(id:%d)\n", sock);
 
 	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family=AF_INET;
@@ -58,7 +60,6 @@ int main(int argc, char** argv)
 
 void error_handling(char* message)
 {
-	fputs(message, stderr);
-	fputc('\n', stderr);
+	printf("%s(%s)\n", message, strerror(errno));
 	exit(1);
 }

@@ -52,6 +52,7 @@ int main(int argc, char** argv)
 	}
 
 	serv_sock=socket(PF_INET, SOCK_STREAM, 0);
+	printf("Server socket is created(id:%d)\n", serv_sock);
 
 	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family=AF_INET;
@@ -68,8 +69,6 @@ int main(int argc, char** argv)
 
 	while(1) {
 
-		printf("haha\n");
-		
 		addr_size=sizeof(clnt_addr);
 		clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_addr, &addr_size);
 		if(clnt_sock == -1)
