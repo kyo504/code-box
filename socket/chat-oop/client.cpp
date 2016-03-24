@@ -71,7 +71,7 @@ void* send_message(void* arg)
 			close(sock_fd);
 			exit(0);
 		}
-		sprintf(name_message, "%s %s", name, message);
+		sprintf(name_message, "%s",message);
 		sock->send(sock_fd, name_message, strlen(name_message));
 	}
 	delete sock;

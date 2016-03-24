@@ -67,7 +67,7 @@ int Socket::accept()
 	struct sockaddr_in addr;
 	memset(&addr, 0x0, sizeof(addr));
 	socklen_t client_len = sizeof(struct sockaddr_in);
-	//printf("[%s] socket id: %d, length: %d\n", __FUNCTION__, mSocket, (int)client_len);
+	printf("[%s] socket id: %d, length: %d\n", __FUNCTION__, mSocket, (int)client_len);
 	return ::accept(mSocket, (struct sockaddr*)&addr, &client_len);	
 }
 

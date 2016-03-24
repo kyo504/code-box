@@ -10,8 +10,13 @@
 #include "sys/socket.h"
 #include "netinet/in.h"
 #include <vector>
+#include <string>
 #include <algorithm>
 #include <pthread.h>
+#include <sstream>
+#include <iostream>
+
+#include "Room.h"
 
 #define BUF_SIZE 100
 
@@ -20,9 +25,13 @@ using namespace std;
 void error_handling(const char* message);
 void* clnt_connection(void* arg);
 void send_message(char* message, int len);
+string int2str(int n);
 
 vector<int>	clnt_socks;
 pthread_mutex_t mutx;
+vector<Room*> room_list;
+
+static int roomID = 100;
 
 int main(int argc, char** argv)
 {
@@ -52,6 +61,7 @@ int main(int argc, char** argv)
 
 		printf("Waiting for new connection request...\n");
 		int clnt_sock = serv_sock->accept();
+		printf("1111111111\n");
 		
 		pthread_mutex_lock(&mutx);
 		clnt_socks.push_back(clnt_sock);
@@ -73,6 +83,41 @@ void error_handling(const char* message)
 	exit(1);
 }
 
+void display_menu(int clnt_sock)
+{
+	Socket* sock = new Socket();
+	string str;
+
+	str = "Room List\n";
+	sock->send(clnt_sock, (char*)str.c_str(), str.length());
+	vector<Room*>::iterator iter = room_list.begin();
+
+	if((int)room_list.size() < 1) {
+		str = "There is no chat room!\n";
+		sock->send(clnt_sock, (char*)str.c_str(), str.length());
+	} else {
+		for(; iter != room_list.end(); ++iter) {
+			//string s = to_string((*iter)->getID());
+			string s = int2str((*iter)->getID());
+			s = s + '\n';
+			sock->send(clnt_sock, (char*)s.c_str(), s.length()); 
+		}
+	}
+
+	str = "1. Create a chat room\n";
+	sock->send(clnt_sock, (char*)str.c_str(), str.length());
+	str = "2. Enter number to join a room\n";
+	sock->send(clnt_sock, (char*)str.c_str(), str.length());
+	str = "Select an option :\n";
+	sock->send(clnt_sock, (char*)str.c_str(), str.length());
+	str = "xxxxxxxxxxxxxxxxxxxx1\n";
+	sock->send(clnt_sock, (char*)str.c_str(), str.length());
+
+	delete sock;
+
+	for_each(room_list.begin(), room_list.end(), [](Room* ptr){ delete ptr; });
+}
+
 void* clnt_connection(void* arg)
 {
 	int clnt_sock=*((int*)arg);
@@ -80,8 +125,30 @@ void* clnt_connection(void* arg)
 	char message[BUF_SIZE];
 	Socket* sock = new Socket();
 
+	display_menu(clnt_sock);
+
+	int choice;
+
 	while( (str_len=sock->recv(clnt_sock, message, sizeof(message))) != 0 ) {
-		send_message(message, str_len);
+		message[str_len]=0;
+		choice = atoi(message);
+		printf("Choice: %d\n", choice);
+		if(choice == 1) {
+			Room* rm = new Room(roomID++);
+			room_list.push_back(rm);
+		} else {
+			printf("break....\n");
+			break;
+		}
+		display_menu(clnt_sock);
+	}
+	
+	printf("choice %d\n", choice);
+	vector<Room*>::iterator rm_iter = room_list.begin();
+	for(; rm_iter != room_list.end(); ++rm_iter) {
+		if((*rm_iter)->getID() == choice) {
+			(*rm_iter)->join(clnt_sock);
+		}
 	}
 
 	pthread_mutex_lock(&mutx);
@@ -110,3 +177,9 @@ void send_message(char* message, int len)
 	delete sock;
 }
 
+string int2str(int n)
+{
+	stringstream s;
+	s << n;
+	return s.str();
+}
