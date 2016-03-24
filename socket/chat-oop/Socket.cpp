@@ -54,6 +54,10 @@ int Socket::bind(char* ip, char* port)
 	addr.sin_addr.s_addr	= htonl(INADDR_ANY);
 	addr.sin_port			= htons(atoi(port));
 
+	int optvalue = 1;
+	int optlen = sizeof(optvalue);
+	::setsockopt(mSocket, SOL_SOCKET, SO_REUSEADDR, &optvalue, optlen);
+
 	return ::bind(mSocket, (struct sockaddr*)&addr, sizeof(addr));
 }
 
