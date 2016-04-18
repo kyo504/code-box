@@ -20,79 +20,15 @@ public:
 	virtual void Unregister() = 0;
 };
 
-
-class Object
-{
-public:
-	Object() {}
-	virtual ~Object() {}
-
-};
-
-class Button : public Object
-{
-public:
-	Button() {}
-	virtual ~Button() {}
-
-	void onClick() {
-		printf("Button is clicked...\n");
-	}
-};
-
-class Controller;
-
-class View : public IObserver
-{
-public:
-	View(Controller *controller) {
-		mController = controller;
-		controller->Register(this);
-	}
-
-	void EnterAge() {
-		cout << "Enter Age";
-		int x = 0;
-		cin >> x;
-		mController->ModifyAge(x);
-	}
-
-	void Update() {
-		cout << "View UPdater Called ......";
-	}
-
-private:
-	Controller *mController;
-};
-
-class Controller
-{
-public:
-	Controller(ISubject* subject) {
-		mSubject = subject;
-	}
-
-	void ModifyAge(int newAge) {
-		dynamic_cast<>(mSubject)
-		(dynamic_cast(mSubject))->SetAge(newAge);
-	}
-
-	void Register(IObserver *viewobj) {
-		mSubject->Register(viewobj);
-	}
-
-private:
-	ISubject *mSubject;
-};
-
 class Model : public ISubject
 {
 public:
 	virtual void Register(IObserver *observingObject) {
 		_observerMap.push_back(observingObject);
+		cout << "Total number of observers: " << static_cast<int>(_observerMap.size()) << endl;
 	}
 
-	virtual void UnRegister() {
+	virtual void Unregister() {
 		// TBD
 	}
 
@@ -112,6 +48,52 @@ private:
 			_observerMap[i]->Update();
 		}
 	}
+};
+
+class Controller : public ISubject
+{
+public:
+	Controller(ISubject* subject) {
+		mSubject = subject;
+	}
+
+	void ModifyAge(int newAge) {
+		(dynamic_cast<Model*>(mSubject))->SetAge(newAge);
+	}
+
+	virtual void Register(IObserver *viewobj) {
+		mSubject->Register(viewobj);
+	}
+
+	virtual void Unregister() {
+		// TBD
+	}
+
+private:
+	ISubject *mSubject;
+};
+
+class View : public IObserver
+{
+public:
+	View(Controller *controller) {
+		mController = controller;
+		controller->Register(this);
+	}
+
+	void EnterAge() {
+		cout << "Enter Age";
+		int x = 0;
+		cin >> x;
+		mController->ModifyAge(x);
+	}
+
+	virtual void Update() {
+		cout << "View Updater Called ......";
+	}
+
+private:
+	Controller *mController;
 };
 
 int main()
