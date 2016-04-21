@@ -10,8 +10,10 @@ public:
 	Image(std::string url);
 	virtual ~Image();
 
-	virtual void Render();
 	void SetURL(std::string url);
+
+	virtual void Render();
+	virtual void HandleEvent(EventType e, void* data);
 
 private:
 	std::string m_sURL;

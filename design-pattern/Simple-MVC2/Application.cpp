@@ -1,7 +1,9 @@
 #include "Application.h"
 
 #include "Button.h"
+#include "Image.h"
 #include <iostream>
+#include <string>
 
 Application::Application()
 {
@@ -14,8 +16,8 @@ Application::~Application()
 bool Application::InitInstance()
 {
 	this->m_pView = new View();
-	this->m_pController = new Controller(this->m_pView);
 	this->m_pModel = new Model();
+	this->m_pController = new Controller(this->m_pView, this->m_pModel);
 
 	m_pView->PrepareView();
 
@@ -34,10 +36,22 @@ void Application::Run()
 		Button* pBtn = dynamic_cast<Button*>(*it);
 		if (pBtn == NULL) {
 			std::cout << "Null" << std::endl;
-		} else {
+			Image* pImg = dynamic_cast<Image*>(*it);
+			m_pController->AddObserver(dynamic_cast<IObserver*>(pImg), EVENT_ON_HIDE);
+		}
+		else {
 			std::cout << "Not Null" << std::endl;
+			m_pController->AddObserver(dynamic_cast<IObserver*>(pBtn), EVENT_ON_CLICK);
 		}
 	}
+	
+	std::string strData1 = "Data for Event A";
+	std::string strData2 = "Data for Event B";
+
+
+	// Dispatch events
+	m_pController->SendEvent(EVENT_ON_CLICK, (void*)(&strData1));
+	m_pController->SendEvent(EVENT_ON_HIDE, (void*)(&strData2));
 }
 
 int Application::ExitInstance()

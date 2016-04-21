@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "Image.h"
 #include <string>
+#include <iostream>
 
 View::View()
 :m_cList(0)
@@ -38,8 +39,20 @@ void View::Render()
 
 void View::PrepareView()
 {
-	AddControl(new Button(std::string("Button 1")));
-	AddControl(new Button(std::string("Button 2")));
+	Button* pBtn1 = new Button(std::string("Button 1"));
+	pBtn1->AddHandler(EVENT_ON_CLICK, [pBtn1](EventType e, void* data){
+		std::cout << "BUTTON EVENT_A : " << *(static_cast<std::string*>(data)) << std::endl;
+
+		pBtn1->SetText(std::string("hjaha"));
+	});
+	AddControl(pBtn1);
+
+	Button* pBtn2 = new Button(std::string("Button 2"));
+	pBtn2->AddHandler(EVENT_ON_HIDE, [pBtn2](EventType e, void* data){
+		std::cout << "BUTTON EVENT_B : " << *(static_cast<std::string*>(data)) << std::endl;
+	});
+	AddControl(pBtn2);
+
 	AddControl(new Image(std::string("/path/to/url/bird.png")));
 	AddControl(new Image(std::string("/path/to/url/dog.png")));
 }
