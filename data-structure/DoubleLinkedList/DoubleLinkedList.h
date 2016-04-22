@@ -14,6 +14,7 @@ public:
 	void pop_back();
 	void pop_front();
 	void clear();
+	Node* back();
 	void erase(Node* delNode);
 	
 	void print_list();

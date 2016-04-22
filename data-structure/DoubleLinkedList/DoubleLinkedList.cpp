@@ -88,5 +88,15 @@ void DoubleLinkedList::print_list()
 		std::cout << pTemp->m_nData << " ";
 		pTemp = pTemp->m_pNext;
 	}
-	std:: cout << std::endl;
+	std::cout << std::endl;
+}
+
+Node* DoubleLinkedList::back() 
+{
+	if (m_pTail->m_pPrev == m_pHead) {
+		std::cout << "There is no item in the list" << std::endl;
+		return 0;
+	} else {
+		return m_pTail->m_pPrev;
+	}
 }
