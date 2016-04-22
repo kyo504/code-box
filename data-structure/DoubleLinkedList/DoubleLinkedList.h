@@ -14,15 +14,13 @@ public:
 	void pop_back();
 	void pop_front();
 	void clear();
+	void erase(Node* delNode);
 	
-	void PrintList();
+	void print_list();
 	
 private:
 	Node* m_pHead;
+	Node* m_pTail;
 };
 
 #endif // DOUBLELINKEDLIST_H_
-
-
-
-#endif
