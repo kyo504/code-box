@@ -85,7 +85,7 @@ void DoubleLinkedList::clear()
 void DoubleLinkedList::print_list()
 {
 	Node* pTemp = m_pHead->m_pNext;
-	std::cout << "Output: ";
+	std::cout << "List: ";
 	while(pTemp != m_pTail) {
 		std::cout << pTemp->m_nData << " ";
 		pTemp = pTemp->m_pNext;
@@ -95,10 +95,15 @@ void DoubleLinkedList::print_list()
 
 Node* DoubleLinkedList::back() 
 {
-	if (m_pTail->m_pPrev == m_pHead) {
-		std::cout << "There is no item in the list" << std::endl;
-		return 0;
-	} else {
-		return m_pTail->m_pPrev;
-	}
+	return is_empty() == true ? 0 : m_pTail->m_pPrev;
+}
+
+Node* DoubleLinkedList::front()
+{
+	return is_empty() == true ? 0 : m_pHead->m_pNext;
+}
+
+bool DoubleLinkedList::is_empty()
+{
+	return m_pHead->m_pNext == m_pTail && m_pTail->m_pPrev == m_pHead ? true : false;
 }

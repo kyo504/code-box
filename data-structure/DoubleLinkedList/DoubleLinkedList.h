@@ -14,8 +14,10 @@ public:
 	bool pop_back();
 	bool pop_front();
 	void clear();
+	Node* front();
 	Node* back();
 	void erase(Node* delNode);
+	bool is_empty();
 	
 	void print_list();
 	
