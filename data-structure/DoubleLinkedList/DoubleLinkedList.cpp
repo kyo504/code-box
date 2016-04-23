@@ -49,26 +49,28 @@ void DoubleLinkedList::erase(Node* delNode)
 	delNode->m_pNext->m_pPrev = delNode->m_pPrev;
 }
 
-void DoubleLinkedList::pop_back()
+bool DoubleLinkedList::pop_back()
 {
 	Node* pTemp = m_pTail->m_pPrev;
 	if (pTemp == m_pHead) {
 		std::cout << "There is no item to pop" << std::endl;
-		return;
+		return false;
 	}
 
 	erase(pTemp);
+	return true;
 }
 
-void DoubleLinkedList::pop_front()
+bool DoubleLinkedList::pop_front()
 {
 	Node* pTemp = m_pHead->m_pNext;
 	if (pTemp == m_pTail) {
 		std::cout << "There is no item to pop" << std::endl;
-		return;
+		return false;
 	}
 
 	erase(pTemp);
+	return true;
 }
 
 void DoubleLinkedList::clear()

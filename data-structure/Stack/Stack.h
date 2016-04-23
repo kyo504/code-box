@@ -6,11 +6,15 @@
 class Stack
 {
 	DoubleLinkedList dl;
+	int m_nCount;
 
 public:
-	void push(int input) { dl.push_back(new Node(input)); }
-	void pop() { dl.pop_back(); }
-	int top() { return dl.back()->m_nData; }
+	Stack();
+	virtual ~Stack();
+	void push(int input);
+	void pop();
+	int top();
+	int get_count();
 };
 
 #endif // STACK_H_

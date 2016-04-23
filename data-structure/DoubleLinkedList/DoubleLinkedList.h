@@ -11,8 +11,8 @@ public:
 	
 	void push_back(Node* newNode);
 	void push_front(Node* newNode);
-	void pop_back();
-	void pop_front();
+	bool pop_back();
+	bool pop_front();
 	void clear();
 	Node* back();
 	void erase(Node* delNode);
