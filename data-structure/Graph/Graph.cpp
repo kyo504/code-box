@@ -62,24 +62,29 @@ bool Graph::VisitVertex(int visitV)
 	return false;
 }
 
+/*
+ *	@brief : Refer to the textbook(Yoon-sung-woo's data structure)
+ */
 void Graph::DFSShowGraphVertex(int startV)
 {
+	Stack stack;
+
 	int visitV = startV;
 	int nextV;
 
-	m_Stack.clear();		// 스택 초기화
+	stack.clear();		// 스택 초기화
 	m_VisitInfo.clear();	// 배열 초기화
 	for( int i=0; i<m_nVertex; i++ ) {
 		m_VisitInfo.push_back(0);
 	}
 
-//	printf("Stack size: %d\n", static_cast<int>(m_Stack.size()));
+//	printf("Stack size: %d\n", static_cast<int>(stack.size()));
 //	printf("List size: %d\n", static_cast<int>(m_VisitInfo.size()));
 
 	list<int>::iterator it = m_nAdjList[visitV]->begin();
 
 	VisitVertex(visitV);	// 시작 정점을 방문
-	m_Stack.push(visitV);	// 시작 정점 정보를 스택에 담는다
+	stack.push(visitV);	// 시작 정점 정보를 스택에 담는다
 
 
 	while( it != m_nAdjList[visitV]->end()) {
@@ -88,17 +93,17 @@ void Graph::DFSShowGraphVertex(int startV)
 		bool visitFlag = false;
 
 		if(VisitVertex(nextV) == true) {
-			m_Stack.push(visitV);
+			stack.push(visitV);
 			visitV = nextV;
 			visitFlag = true;
 		} else {
-			it = next(it,1);
+			it = next(it, 1);
 
 			while(it != m_nAdjList[visitV]->end()) {
 				nextV = *it;
 
 				if(VisitVertex(nextV) == true) {
-					m_Stack.push(visitV);
+					stack.push(visitV);
 					visitV = nextV;
 					visitFlag = true;
 					break;
@@ -109,12 +114,63 @@ void Graph::DFSShowGraphVertex(int startV)
 		}
 
 		if(visitFlag == false) {
-			if(m_Stack.is_empty() == true)
+			if(stack.is_empty() == true)
 				break;
 			else
-				visitV = m_Stack.pop();
+				visitV = stack.pop();
 		}
 
 		it = m_nAdjList[visitV]->begin();
+	}
+}
+
+/*
+ *	@brief : Refer to the textbook(Yoon-sung-woo's data structure)
+ */
+void Graph::BFSShowGraphVertex(int startV)
+{
+	Queue queue;
+
+	int visitV = startV;
+	int nextV;
+
+	queue.clear();			// Queue 초기화
+	m_VisitInfo.clear();	// 배열 초기화
+	for( int i=0; i<m_nVertex; i++ ) {
+		m_VisitInfo.push_back(0);
+	}
+
+	VisitVertex(visitV);	// 첫 번째 정점을 방문한다.
+
+	list<int>::iterator it = m_nAdjList[visitV]->begin();
+
+	// 해당 정점에 연결된 다른 정점이 있는지 찾는다.
+	while( it != m_nAdjList[visitV]->end() ) {
+
+		nextV = *it;
+
+		if( VisitVertex(nextV) == true )
+			queue.enqueue(nextV);
+
+		it = next(it, 1);
+
+		while( it != m_nAdjList[visitV]->end() ) {
+
+			nextV = *it;
+
+			if( VisitVertex(nextV) == true )
+				queue.enqueue(nextV);
+
+			it = next(it, 1);
+		}
+
+
+		if(queue.is_empty()) {
+			break;
+		} else {
+			visitV = queue.dequeue();
+			//printf("Next visit: %c\n", visitV+65);
+			it = m_nAdjList[visitV]->begin();
+		}
 	}
 }

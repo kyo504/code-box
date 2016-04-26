@@ -35,6 +35,35 @@ private:
 	list<int> m_list;
 };
 
+class Queue
+{
+public:
+	void enqueue(int data){
+		m_list.push_front(data);
+	}
+
+	int dequeue(){
+		int ret = m_list.back();
+		m_list.pop_back();
+		return ret;
+	}
+
+	bool is_empty(){
+		return static_cast<int>(m_list.size()) <= 0 ? true : false;
+	}
+	
+	void clear() {
+		m_list.clear();
+	}
+
+	int size() {
+		return static_cast<int>(m_list.size());
+	}
+
+private:
+	list<int> m_list;
+};
+
 class Graph
 {
 public:
@@ -47,6 +76,7 @@ public:
 	void ShowGraphEdgeInfo();
 
 	void DFSShowGraphVertex(int startV);
+	void BFSShowGraphVertex(int startV);
 	bool VisitVertex(int visitV);
 
 	int m_nVertex;
@@ -55,7 +85,6 @@ public:
 private:
 	vector< list<int>* > m_nAdjList;
 	vector<int> m_VisitInfo;
-	Stack m_Stack;
 };
 
 #endif // GRAPH_H_

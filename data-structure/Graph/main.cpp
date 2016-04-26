@@ -18,12 +18,22 @@ int main(int argc, char* argv[])
 
 	gp.ShowGraphEdgeInfo();
 
-	gp.DFSShowGraphVertex(A);
+	// gp.DFSShowGraphVertex(A);
+	// printf("\n");
+	// gp.DFSShowGraphVertex(C);
+	// printf("\n");
+	// gp.DFSShowGraphVertex(E);
+	// printf("\n");
+	// gp.DFSShowGraphVertex(G);
+	// printf("\n");
+
+	gp.BFSShowGraphVertex(A);
 	printf("\n");
-	gp.DFSShowGraphVertex(C);
+	gp.BFSShowGraphVertex(C);
 	printf("\n");
-	gp.DFSShowGraphVertex(E);
+	gp.BFSShowGraphVertex(E);
 	printf("\n");
-	gp.DFSShowGraphVertex(G);
+	gp.BFSShowGraphVertex(G);
 	printf("\n");
+
 }
