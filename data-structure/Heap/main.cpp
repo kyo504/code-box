@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
 
 
 
-	// while(!heap.IsEmpty())
-	// 	printf("%c is deleted\n", heap.Delete());
+	while(!heap.IsEmpty())
+		printf("%c is deleted\n", heap.Delete());
 
 	return 0;
 }

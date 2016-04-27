@@ -103,8 +103,9 @@ HeapData Heap::Delete()
 			m_vArr[childIdx].data = tempElem.data;
 			m_vArr[childIdx].pr = tempElem.pr;
 
-			parentIdx = childIdx;
 		}
+
+		parentIdx = childIdx;
 	}
 
 	return retData;
@@ -112,7 +113,7 @@ HeapData Heap::Delete()
 
 bool Heap::IsEmpty()
 {
-	return GetSize() <= 1 ? true : false;
+	return GetSize() <= 0 ? true : false;
 }
 
 int Heap::GetSize()
